@@ -1,0 +1,8 @@
+# Directories
+bin/
+docs/
+objs/
+sounds/
+
+# Files
+*.sublime-*
