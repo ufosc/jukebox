@@ -23,7 +23,9 @@ protected:
 	std::vector<ALuint> m_bufs;
 	std::vector<char> m_data;
 	unsigned int m_current_buf;
-	std::ifstream file;
+	
+	std::ifstream m_file;
+	size_t m_file_size;
 
 	/**
 	 * Opens a file for streaming
@@ -41,8 +43,8 @@ protected:
 	void stream();
 
 public:
-	// 32 KB buffers
-	static constexpr size_t BUFFER_SIZE = 32768;
+	// 48 KB buffers
+	static constexpr size_t BUFFER_SIZE = 48000;
 	static constexpr size_t STREAM_BUFFERS = 3;
 
 	/**

@@ -1,4 +1,5 @@
 #include <source.hpp>
+#include <iostream>
 
 source::source(const std::string path) 
 {
@@ -13,8 +14,21 @@ source::source(const std::string path)
 
 	m_current_buf = 0;
 
-	// Open the file
-	file.open(path, std::ifstream::in);
+	// Set ifstream to throw an exception on I/O failures
+	m_file.exceptions(std::ifstream::badbit);
+
+	// Try to open the file & get the file size
+	try {
+		m_file.open(path, std::ifstream::binary | std::ifstream::ate);
+		m_file_size = m_file.tellg();
+		m_file.close();
+
+		// Have file open for use
+		m_file.open(path, std::ifstream::in);
+	} catch (...) {
+		std::cerr << "ERROR: Could not open file '" << path << "'"<< std::endl;
+		throw("Source: Could not open file");
+	}
 }
 
 source::~source() 
@@ -29,7 +43,7 @@ source::~source()
 	alDeleteSources(1, &m_id);
 
 	// Close the file
-	file.close();
+	m_file.close();
 }
 
 void source::stream()

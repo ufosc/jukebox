@@ -45,7 +45,7 @@ void ogg::open(const int offset) {
 		ov_callbacks ov_adapt {};
 		ov_adapt.read_func  = ifs_read;
 		ov_adapt.close_func = ifs_close;
-		if (ov_open_callbacks(&file, &oggFile, nullptr, 0, ov_adapt) != 0)
+		if (ov_open_callbacks(&m_file, &oggFile, nullptr, 0, ov_adapt) != 0)
 		{
 			std::cerr << "ERROR: Error opening file for decoding." << std::endl;
 			throw("Audio: Could not open sound file");
@@ -83,6 +83,6 @@ void ogg::open(const int offset) {
 
 	} catch (const std::exception& e) {
 		std::cerr << "ERROR: Could not load sound file | " << e.what() << std::endl;
-		throw("AAAAAA");
+		throw("OGG: Could not load sound file");
 	}
 }
