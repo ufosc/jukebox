@@ -6,7 +6,7 @@
 
 int main() {
 	auto juke = std::make_shared<jukebox>();
-	auto file1 = std::make_shared<ogg>("sounds/m420.ogg");
+	auto file1 = std::make_shared<ogg>("sounds/test.ogg");
 	// auto file2 = std::make_shared<flac>("girl");
 	
 	std::cout << file1->id() << std::endl;

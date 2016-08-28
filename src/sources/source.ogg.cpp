@@ -35,19 +35,33 @@ void ogg::open(const int offset) {
 	OggVorbis_File oggFile;
 
 	try {
-		// Test that the file is actually an ogg file (this breaks everything :( )
-		// if (ov_test_callbacks(oggRawFile, &oggFile, NULL, 0, OV_CALLBACKS_DEFAULT)) {
-		// 	std::cerr << "ERROR: Specified sound file is not OGG format: " << oggPath << std::endl; 
-		// 	throw("Audio: Specified sound file wrong format");
-		// }
-
 		// Try opening the file
 		ov_callbacks ov_adapt {};
 		ov_adapt.read_func  = ifs_read;
 		ov_adapt.close_func = ifs_close;
-		if (ov_open_callbacks(&m_file, &oggFile, nullptr, 0, ov_adapt) != 0)
+
+		int res = ov_open_callbacks(&m_file, &oggFile, nullptr, 0, ov_adapt);
+		if (res != 0)
 		{
-			std::cerr << "ERROR: Error opening file for decoding." << std::endl;
+			std::string err = "ERROR: ";
+			switch (res) {
+				case OV_EREAD:
+					err += "Read error"; 
+					break;
+				case OV_ENOTVORBIS:
+					err += "Specified file is not a vorbis file"; 
+					break;
+				case OV_EVERSION:
+					err += "Vorbis version mismatch";
+					break;
+				case OV_EBADHEADER:
+					err += "Bad vorbis header";
+					break;
+				case OV_EFAULT:
+					err += "Internal logic fault";
+			}
+
+			std::cerr << err << std::endl;
 			throw("Audio: Could not open sound file");
 		}
 
