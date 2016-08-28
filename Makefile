@@ -13,7 +13,7 @@ SRC=src/jukebox.cpp src/main.cpp src/source.cpp $(wildcard src/sources/source.*.
 OBJ=$(addsuffix .o, $(addprefix objs/, $(notdir $(SRC))))
 
 all: $(DIR) $(OBJ)
-	$(CXX) $(CFLAGS) $(LIBS) $(INCLUDE) -o bin/main $(OBJ) -lm 
+	$(CXX) $(CFLAGS) $(INCLUDE) -o bin/main $(OBJ) $(LIBS) -lm 
 
 clean:
 	@rm -rf objs/*
