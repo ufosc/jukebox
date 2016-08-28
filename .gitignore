@@ -3,6 +3,7 @@ bin/
 docs/
 objs/
 sounds/
+.vscode/
 
 # Files
 *.sublime-*
