@@ -4,17 +4,21 @@
 #include <sources/source.flac.hpp>
 #include <sources/source.ogg.hpp>
 
-int main() {
+int main(int argc, char* argv[]) {
+	// Check that args are correct
+	if (argc != 2)
+	{
+		std::cout << "usage: " << argv[0] << " /path/to/audio/file" << std::endl;
+		return -1;
+	}
+
 	auto juke = std::make_shared<jukebox>();
-	auto file1 = std::make_shared<ogg>("sounds/test.ogg");
-	// auto file2 = std::make_shared<flac>("girl");
+	auto file1 = std::make_shared<ogg>(argv[1]);
 	
 	std::cout << file1->id() << std::endl;
-	// std::cout << file2->id() << std::endl;
 
 	std::cout << juke->devName() << std::endl;
 	juke->addSource("file1", file1);
-	// juke->addSource("file2", file2);
 
 	juke->play("file1");
 
