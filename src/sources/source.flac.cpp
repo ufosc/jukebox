@@ -1,5 +1,5 @@
 #include <sources/source.flac.hpp>
 
-void flac::open(const int offset) {
+long flac::read(ALuint buffer) {
 	// TODO
 }

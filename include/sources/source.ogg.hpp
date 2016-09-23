@@ -11,6 +11,7 @@
 #define __JUKEBOX_SOURCE_OGG__
 
 #include <source.hpp>
+#include <vorbis/vorbisfile.h>
 
 class ogg : public source 
 {
@@ -25,12 +26,15 @@ private:
 	static size_t ifs_read(void *ptr, size_t size, size_t nmemb, void *datasource);
 	static int    ifs_close(void *datasource);
 
+	// OGG file handler
+	OggVorbis_File m_ogg_file;
+
 protected:
-	void open(const int offset);
+	long read(ALuint buffer);
 
 public:
-	using source::source;
-	~ogg() = default;
+	ogg(const std::string path);
+	~ogg();
 };
 
 #endif // __JUKEBOX_SOURCE_OGG__

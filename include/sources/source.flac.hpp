@@ -15,7 +15,7 @@
 class flac : public source 
 {
 protected:
-	void open(const int offset);
+	long read(ALuint buffer);
 	
 public:
 	using source::source;

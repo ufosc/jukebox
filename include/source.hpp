@@ -15,37 +15,46 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <thread>
 
 class source 
 {
 protected:
 	ALuint m_id;
-	std::vector<ALuint> m_bufs;
-	std::vector<char> m_data;
-	unsigned int m_current_buf;
 	
+	// File Info
 	std::ifstream m_file;
-	size_t m_file_size;
+	ALenum m_format;
+	float m_freq;
+
+	// Thread Info
+	std::thread m_thr;
+	bool m_run_thr;
 
 	/**
 	 * Opens a file for streaming
 	 *
 	 * @param offset An integer multiple of the block size offset to read from
+	 * @param current_buf An unsigned integer of which buffer to write to
+	 *
+	 * @return long How many bytes were read
 	 */
-	virtual void open(const int offset) = 0;
+	virtual long read(ALuint buffer) = 0;
 
 	/**
 	 * Threaded streaming of file
 	 *
 	 * This will open a new thread which will watch the OpenAL buffer and load the file
 	 * in chunks as needed
+	 *
+	 * @param ready A lambda to be called when the stream is ready to be played
 	 */
-	void stream();
+	void stream(std::function<void (ALuint)> ready);
 
 public:
-	// 48 KB buffers
-	static constexpr size_t BUFFER_SIZE = 48000;
-	static constexpr size_t STREAM_BUFFERS = 3;
+	// 4 KB buffers
+	static constexpr size_t BUFFER_SIZE = 4 * 1024;
+	static constexpr size_t STREAM_BUFS = 3;
 
 	/**
 	 * Constructor for the source object
@@ -70,6 +79,11 @@ public:
 	 * Plays the source
 	 */
 	void play();
+
+	/**
+	 * Stops the source
+	 */
+	void stop();
 
 	/**
 	 * Check if track is playing

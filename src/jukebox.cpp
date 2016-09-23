@@ -13,6 +13,10 @@ jukebox::jukebox(const ALCchar* n_dev, const ALCint* n_con)
 
 jukebox::~jukebox() 
 {
+	// Stop the sources
+	for (auto& src : m_sources) 
+		src.second->stop();
+
 	// Frees up the audio device and connection upon destruction
 	alcDestroyContext(m_con);
 	alcCloseDevice(m_dev);
